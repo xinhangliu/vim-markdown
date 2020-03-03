@@ -86,7 +86,7 @@ syn region mdH5 matchgroup=mdH5_ start="^#####\s\+"  end="\( #\+\|\s*\)$" keepen
 syn region mdH6 matchgroup=mdH6_ start="^######\s\+" end="\( #\+\|\s*\)$" keepend oneline contains=@mdInline,mdAutomaticLink contained
 " }}}
 
-syn region mdBlockquote matchgroup=mdBlockquote_ start="^\s*>\s\+" end="$" contains=@mdInline
+syn region mdBlockquote matchgroup=mdBlockquote_ start="^\s*>" end="$" contains=@mdInline
 
 syn region mdCodeBlock start=/\(^\S.*\n\)\@<!\(^\(\s\{4,}\|\t\+\)\).*\n/ end=/.\(\n^\s*\n\)\@=/ contained
 
