@@ -40,9 +40,18 @@ endif
 
 let s:conceal = ''
 let s:concealends = ''
-if has('conceal') && get(g:, 'markdown_syntax_conceal', 1) == 1
+if has('conceal') && get(g:, 'markdown_conceal_small', 1) == 1
   let s:conceal = ' conceal'
   let s:concealends = ' concealends'
+endif
+
+let s:conceal_link = ''
+let s:conceal_image = ''
+let s:concealends_link = ''
+if has('conceal') && get(g:, 'markdown_conceal_link', 1) == 1
+  let s:conceal_link = ' conceal'
+  let s:concealends_link = ' concealends'
+  let s:conceal_image = ' cchar=' . get(g:, 'markdown_conceal_link_cchar', '▨')
 endif
 
 if !exists('g:markdown_minlines')
@@ -107,10 +116,10 @@ syn region mdURL matchgroup=mdURL_ start="(\(https\?:\/\/\(\w\+\(:\w\+\)\?@\)\?\
 syn region mdURL matchgroup=mdURL_ start="\\\@<!<\ze[a-z][a-z0-9,.-]\{1,22}:\/\/[^> ]*>" end=">"
 
 " [linkText](URL) | [linkText][id] | [linkText][] | ![image](URL)
-execute 'syn region mdID matchgroup=mdID_    start="\["    end="\]" contained oneline' . s:conceal
-execute 'syn region mdURL matchgroup=mdURL_   start="("     end=")"  contained oneline' . s:conceal
-execute 'syn match mdImageMarker /!/ oneline nextgroup=mdLinkText' . s:conceal . ' cchar=▨'
-execute 'syn region mdLinkText matchgroup=mdLinkText_  start="\\\@<!\[\ze[^]\n]*\n\?[^]\n]*\][[(]" end="\]" contains=@mdInline,@Spell nextgroup=mdURL,mdID skipwhite' . s:concealends
+execute 'syn region mdID matchgroup=mdID_    start="\["    end="\]" contained oneline' . s:conceal_link
+execute 'syn region mdURL matchgroup=mdURL_   start="("     end=")"  contained oneline' . s:conceal_link
+execute 'syn match mdImageMarker /!/ oneline nextgroup=mdLinkText' . s:conceal_link . s:conceal_image
+execute 'syn region mdLinkText matchgroup=mdLinkText_  start="\\\@<!\[\ze[^]\n]*\n\?[^]\n]*\][[(]" end="\]" contains=@mdInline,@Spell nextgroup=mdURL,mdID skipwhite' . s:concealends_link
 
 " Link definitions: [ID]: URL (Optional Title)
 syn region mdLinkDef matchgroup=mdLinkDef_   start="^ \{,3}\zs\[\^\@!" end="]:" oneline nextgroup=mdLinkDefTarget skipwhite
