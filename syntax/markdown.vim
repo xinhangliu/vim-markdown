@@ -88,7 +88,8 @@ syn region mdH6 matchgroup=mdH6_ start="^######\s\+" end="\( #\+\|\s*\)$" keepen
 
 syn region mdBlockquote matchgroup=mdBlockquote_ start="^\s*>" end="$" contains=@mdInline
 
-syn region mdCodeBlock start=/\(^\S.*\n\)\@<!\(^\(\s\{4,}\|\t\+\)\).*\n/ end=/.\(\n^\s*\n\)\@=/ contained
+syn match mdCodeBlock "\%^\(\(\s\{4,}[^ ]\|\t\+[^\t]\).*\n\)\+" contained
+syn match mdCodeBlock "^\s*\n\(\(\s\{4,}[^ ]\|\t\+[^\t]\).*\n\)\+" contained
 
 " List {{{2
 syn match mdList_ "^\s*[-*+]\ze\s\+" contained
