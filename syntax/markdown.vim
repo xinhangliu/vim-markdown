@@ -66,7 +66,7 @@ syn match mdValid '&\%(#\=\w*;\)\@!' transparent contains=NONE
 syn match mdLineStart "^[<@]\@!" nextgroup=@mdBlock,htmlSpecialChar
 
 syn cluster mdBlock contains=mdH1,mdH2,mdH3,mdH4,mdH5,mdH6,mdBlockquote,mdList_,mdOrderedList_,mdEmptyCheckboxList_,mdCheckboxList_,mdCodeBlock,mdRule
-syn cluster mdInline contains=mdLineBreak,mdLinkText,mdItalic,mdBold,mdCodeInline,mdMathInline,mdEscape,mdError,mdValid
+syn cluster mdInline contains=mdLineBreak,mdLinkText,mdItalic,mdBold,mdCodeInline,mdMathInline,mdEscape,mdError,mdValid,mdFootnote
 
 syn match mdH1 "^.\+\n=\+$" contained contains=@mdInline,mdHeadingRule,mdAutomaticLink
 syn match mdH2 "^.\+\n-\+$" contained contains=@mdInline,mdHeadingRule,mdAutomaticLink
@@ -82,7 +82,7 @@ syn region mdH6 matchgroup=mdH6_ start="^######\s\+" end="\( #\+\|\s*\)$" keepen
 
 syn region mdBlockquote matchgroup=mdBlockquote_ start="^\s*>\s\+" end="$" contains=@mdInline
 
-syn region mdCodeBlock matchgroup=mdCodeBlock_ start="^\s*\n\%(    \|\t\)" end="$"
+syn region mdCodeBlock start=/\(^\S.*\n\)\@<!\(^\(\s\{4,}\|\t\+\)\).*\n/ end=/.\(\n^\s*\n\)\@=/ contained
 
 " List {{{2
 syn match mdList_ "^\s*[-*+]\ze\s\+" contained
@@ -126,6 +126,7 @@ exe 'syn region mdBold matchgroup=mdBold_ start="\S\@<=\*\*\|\*\*\S\@=" end="\S\
 exe 'syn region mdBold matchgroup=mdBold_ start="\w\@<!__\S\@=" end="\S\@<=__\w\@!" skip="\\_" contains=mdLineStart,mdItalic,@Spell' . s:concealends
 exe 'syn region mdBoldItalic matchgroup=mdBoldItalic_ start="\S\@<=\*\*\*\|\*\*\*\S\@=" end="\S\@<=\*\*\*\|\*\*\*\S\@=" skip="\\\*" contains=mdLineStart,@Spell' . s:concealends
 exe 'syn region mdBoldItalic matchgroup=mdBoldItalic_ start="\w\@<!___\S\@=" end="\S\@<=___\w\@!" skip="\\_" contains=mdLineStart,@Spell' . s:concealends
+exe 'syn region mdStrikeThrough matchgroup=mdStrikeThrough_ start="\S\@<=\~\~\|\~\~\S\@=" end="\S\@<=\~\~\|\~\~\S\@=" skip="\\\~" contains=mdLineStart,@Spell' .s:concealends
 
 exe 'syn region mdCodeInline matchgroup=mdCodeInline_ start="`" end="`" keepend contains=mdLineStart' . s:concealends
 exe 'syn region mdCodeInline matchgroup=mdCodeInline_ start="`` \=" end=" \=``" keepend contains=mdLineStart' . s:concealends
@@ -134,6 +135,8 @@ syn region mdCodeBlock matchgroup=mdCodeBlock_ start="^\s*\z(\~\{3,\}\).*$" end=
 
 syn match mdFootnote "\[^[^\]]\+\]"
 syn match mdFootnoteDefinition "^\[^[^\]]\+\]:"
+
+syn match mdEmoji ":[[:alnum:]_+-]\+:" display
 
 " Frontmatter {{{2
 " YAML frontmatter
@@ -145,7 +148,7 @@ syn region mdYAMLFrontmatter matchgroup=mdYAML_ start="\%^---$" end="^\(---\|\.\
 " Math {{{2
 syn include @TEX syntax/tex.vim
 unlet! b:current_syntax
-syn region mdMathInline start="\\\@<!\$" end="\$" skip="\\\$" contains=@TEX keepend concealends
+syn region mdMathInline start="\\\@<!\$" end="\$" skip="\\\$" contains=@TEX oneline keepend concealends
 syn region mdMathBlock start="\\\@<!\$\$" end="\$\$" skip="\\\$" contains=@TEX keepend
 " }}}
 
@@ -181,15 +184,16 @@ hi def link mdH5_                mdHeading_
 hi def link mdH6_                mdHeading_
 hi def link mdHeading_           Delimiter
 hi def link mdOrderedList_       mdList_
+hi def link mdCheckboxList_      mdList_
+hi def link mdEmptyCheckboxList_ mdList_
 hi def link mdList_              htmlTagName
-hi def link mdCheckboxList_      Comment
-hi def link mdEmptyCheckboxList_ htmlTagName
-hi def link mdBlockquote         Comment
-hi def link mdBlockquote_        Comment
+hi def link mdBlockquote         htmlItalic
+hi def link mdBlockquote_        htmlTagName
 hi def link mdRule               PreProc
 
 hi def link mdFootnote           Typedef
 hi def link mdFootnoteDefinition Typedef
+hi def link mdEmoji              Type
 
 hi def link mdLinkText           htmlLink
 hi def link mdLinkDef            Typedef
@@ -210,6 +214,8 @@ hi def link mdBold               htmlBold
 hi def link mdBold_              mdBold
 hi def link mdBoldItalic         htmlBoldItalic
 hi def link mdBoldItalic_        mdBoldItalic
+hi def link mdStrikeThrough      htmlStrike
+hi def link mdStrikeThrough_     Comment
 hi def link mdCodeInline         Comment
 hi def link mdCodeInline_        Comment
 hi def link mdCodeBlock          Comment
