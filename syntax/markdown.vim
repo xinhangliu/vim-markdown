@@ -54,20 +54,15 @@ if has('conceal') && get(g:, 'markdown_conceal_link', 1) == 1
   let s:conceal_image = ' cchar=' . get(g:, 'markdown_conceal_link_cchar', '▨')
 endif
 
-if !exists('g:markdown_minlines')
-  let g:markdown_minlines = 50
-endif
-execute 'syn sync minlines=' . g:markdown_minlines
+execute 'syn sync minlines=' . get(g:, 'markdown_minlines', 50)
 syn case ignore
 
-" HTML: {{{3
-" Set embedded HTML highlighting
+" Embedded HTML {{{2
 syn include @HTML syntax/html.vim
 unlet! b:current_syntax
 syn match mdHTML /<\/\?\a.\{-}>/ contains=@HTML
-" Support HTML multi line comments
 syn region mdHTMLComment matchgroup=mdHTMLComment start=/<!--\s\=/ end=/\s\=-->/ contains=vimTodo
-" }}}3
+" }}}
 
 syn match mdValid '[<>]\c[a-z/$!]\@!' transparent contains=NONE
 syn match mdValid '&\%(#\=\w*;\)\@!' transparent contains=NONE
@@ -77,6 +72,7 @@ syn match mdLineStart "^[<@]\@!" nextgroup=@mdBlock,htmlSpecialChar
 syn cluster mdBlock contains=mdH1,mdH2,mdH3,mdH4,mdH5,mdH6,mdBlockquote,mdList_,mdOrderedList_,mdEmptyCheckboxList_,mdCheckboxList_,mdCodeBlock,mdRule
 syn cluster mdInline contains=mdLineBreak,mdLinkText,mdItalic,mdBold,mdCodeInline,mdMathInline,mdEscape,mdError,mdValid,mdFootnote
 
+" Headings {{{2
 syn match mdH1 "^.\+\n=\+$" contained contains=@mdInline,mdHeadingRule,mdAutomaticLink
 syn match mdH2 "^.\+\n-\+$" contained contains=@mdInline,mdHeadingRule,mdAutomaticLink
 
@@ -88,6 +84,7 @@ syn region mdH3 matchgroup=mdH3_ start="^###\s\+"    end="\( #\+\|\s*\)$" keepen
 syn region mdH4 matchgroup=mdH4_ start="^####\s\+"   end="\( #\+\|\s*\)$" keepend oneline contains=@mdInline,mdAutomaticLink contained
 syn region mdH5 matchgroup=mdH5_ start="^#####\s\+"  end="\( #\+\|\s*\)$" keepend oneline contains=@mdInline,mdAutomaticLink contained
 syn region mdH6 matchgroup=mdH6_ start="^######\s\+" end="\( #\+\|\s*\)$" keepend oneline contains=@mdInline,mdAutomaticLink contained
+" }}}
 
 syn region mdBlockquote matchgroup=mdBlockquote_ start="^\s*>\s\+" end="$" contains=@mdInline
 
