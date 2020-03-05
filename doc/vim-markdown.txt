@@ -1,4 +1,4 @@
-*vim-markdown* Markdown syntax for Vim
+*vim-markdown* Enhanced vim markdown syntax
 
 ==============================================================================
 CONTENTS                                                *vim-markdown-contents*
@@ -23,6 +23,12 @@ OPTIONS                                                  *vim-markdown-options*
   A |boolean| number determines whether conceal links or not.
 
   Default: `1`
+
+*g:markdown_conceal_image_cchar*
+  The character shown in place of the image link marker `!`.
+
+  Type: |string|
+  Default: `▨`
 
 *g:markdown_minlines*
   A |number| sets the minimum synchronized lines for syntax highlight. Small

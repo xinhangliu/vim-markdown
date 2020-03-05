@@ -51,7 +51,7 @@ let s:concealends_link = ''
 if has('conceal') && get(g:, 'markdown_conceal_link', 1) == 1
   let s:conceal_link = ' conceal'
   let s:concealends_link = ' concealends'
-  let s:conceal_image = ' cchar=' . get(g:, 'markdown_conceal_link_cchar', '▨')
+  let s:conceal_image = ' cchar=' . get(g:, 'markdown_conceal_image_cchar', '▨')
 endif
 
 execute 'syn sync minlines=' . get(g:, 'markdown_minlines', 50)
