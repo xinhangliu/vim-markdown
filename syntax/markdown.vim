@@ -157,13 +157,13 @@ syn region mdTOMLFrontmatter matchgroup=mdTOML_ start="\%^+++$" end="^\(+++\|\.\
 " }}}
 
 " Hugo {{{2
-syn region mdHugoShortcodeTag start="{{<\s*/" end=">}}" contains=mdHugoShortcodeN,mdHugoShortcodeChar keepend
-syn region mdHugoShortcodeTag start="{{%\s*/" end="%}}" contains=mdHugoShortcodeN,mdHugoShortcodeChar keepend
 syn region mdHugoShortcodeTag start="{{<\s*[^/]" end=">}}" contains=mdHugoShortcodeN,mdHugoShortcodeValue,mdHugoShortcodeArg,mdHugoShortcodeChar keepend
 syn region mdHugoShortcodeTag start="{{%\s*[^/]" end="%}}" contains=mdHugoShortcodeN,mdHugoShortcodeValue,mdHugoShortcodeArg,mdHugoShortcodeChar keepend
+syn region mdHugoShortcodeTag start="{{<\s*/" end=">}}" contains=mdHugoShortcodeN,mdHugoShortcodeChar keepend
+syn region mdHugoShortcodeTag start="{{%\s*/" end="%}}" contains=mdHugoShortcodeN,mdHugoShortcodeChar keepend
 syn match mdHugoShortcodeN "/\@<=\s*[_-a-zA-Z0-9]\+" contained contains=mdHugoShortcodeName
 syn match mdHugoShortcodeN "\%([<%]\)\@<=\s*[_-a-zA-Z0-9]\+" contained contains=mdHugoShortcodeName
-syn match mdHugoShortcodeName "\s*\zs[_-a-zA-Z0-9]\+" contained
+syn match mdHugoShortcodeName "[_-a-zA-Z0-9]\+" contained
 syn match mdHugoShortcodeValue "\s*\zs[_-a-zA-Z0-9]\+\ze[^=]" contained
 syn region mdHugoShortcodeValue start=+\`+ end=+\`+ contained keepend
 syn region mdHugoShortcodeValue start=+"+ end=+"+ contained keepend oneline
