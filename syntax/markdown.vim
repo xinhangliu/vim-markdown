@@ -150,6 +150,28 @@ syn match mdEmoji ":[[:alnum:]_+-]\+:" display
 syn include @YAML syntax/yaml.vim
 unlet! b:current_syntax
 syn region mdYAMLFrontmatter matchgroup=mdYAML_ start="\%^---$" end="^\(---\|\.\.\.\)$" contains=@YAML keepend
+" TOML frontmatter
+syn include @TOML syntax/toml.vim
+unlet! b:current_syntax
+syn region mdTOMLFrontmatter matchgroup=mdTOML_ start="\%^+++$" end="^\(+++\|\.\.\.\)$" contains=@TOML keepend
+" }}}
+
+" Hugo {{{2
+syn region mdHugoShortcodeTag start="{{<\s*/" end=">}}" contains=mdHugoShortcodeN,mdHugoShortcodeChar keepend
+syn region mdHugoShortcodeTag start="{{%\s*/" end="%}}" contains=mdHugoShortcodeN,mdHugoShortcodeChar keepend
+syn region mdHugoShortcodeTag start="{{<\s*[^/]" end=">}}" contains=mdHugoShortcodeN,mdHugoShortcodeValue,mdHugoShortcodeArg,mdHugoShortcodeChar keepend
+syn region mdHugoShortcodeTag start="{{%\s*[^/]" end="%}}" contains=mdHugoShortcodeN,mdHugoShortcodeValue,mdHugoShortcodeArg,mdHugoShortcodeChar keepend
+syn match mdHugoShortcodeN "/\@<=\s*[_-a-zA-Z0-9]\+" contained contains=mdHugoShortcodeName
+syn match mdHugoShortcodeN "\%([<%]\)\@<=\s*[_-a-zA-Z0-9]\+" contained contains=mdHugoShortcodeName
+syn match mdHugoShortcodeName "\s*\zs[_-a-zA-Z0-9]\+" contained
+syn match mdHugoShortcodeValue "\s*\zs[_-a-zA-Z0-9]\+\ze[^=]" contained
+syn region mdHugoShortcodeValue start=+\`+ end=+\`+ contained keepend
+syn region mdHugoShortcodeValue start=+"+ end=+"+ contained keepend oneline
+syn match mdHugoShortcodeArg "\s*\zs[_-a-zA-Z0-9]\+\ze=" contained
+syn match mdHugoShortcodeChar "{{[<%]" contained
+syn match mdHugoShortcodeChar "[>%]}}" contained
+syn match mdHugoShortcodeChar "\%({{[<%]\s*\)\@<=/" contained
+syn match mdHugoShortcodeChar "=" contained
 " }}}
 
 " Math {{{2
@@ -234,6 +256,12 @@ hi def link mdHTMLComment        Comment
 hi def link mdHTMLCommentStart   Comment
 hi def link mdHTMLCommentEnd     Comment
 hi def link mdYAML_              Comment
+hi def link mdTOML_              Comment
+
+hi def link mdHugoShortcodeName  htmlTagName
+hi def link mdHugoShortcodeValue String
+hi def link mdHugoShortcodeArg   Type
+hi def link mdHugoShortcodeChar  Special
 
 let b:current_syntax = "markdown"
 if main_syntax ==# 'markdown'
